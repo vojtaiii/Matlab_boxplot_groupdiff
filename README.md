@@ -15,7 +15,7 @@ where the parameters are:
  - **data**: the data in the same format as classic boxplot
  - **groups**: group identifiers in the same format as classic boxplot
  - **diffs**: (MxN double matrix) info about the significant differences. Each row represents a single difference. First column is the position of the group A, 
- second column the position of group B and third column is the degree of significance (1 - '*', 2 - '**', 3 - '***'). Example:
+ second column the position of group B and third column is the degree of significance (1 - '\*', 2 - '\*\*', 3 - '\*\*\*'). Example:
  
   ```matlab
   diffs = [1 3 1; 1 4 2; 3 4 3];
