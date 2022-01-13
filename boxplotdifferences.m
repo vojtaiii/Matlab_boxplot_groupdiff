@@ -1,5 +1,5 @@
-function boxplotdifferences(data, groups, diffs, labels)
-% boxplotsDifferences.m
+function boxplotdifferences(data, groups, diffs, labels, groupOrder)
+% boxplotdifferences(data, groups, diffs, labels, groupOrder)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Compose the classic MATLAB boxplot with included between-group differences
 % shown as lines with stars above.
@@ -13,12 +13,17 @@ function boxplotdifferences(data, groups, diffs, labels)
 %   [1 3 1; 1 4 2; 3 4 3].
 %   labels: group labels to appear in the boxplot in the same format as a
 %   classic boxplot. Example: {'group a', 'group b', 'group c'}
+%   groupOrder (optional argument): specifies the order of the groups
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Vojtech Illner, FEE CTU
 % December 2021
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-boxplot(data, groups, 'Labels', labels);
+if nargin < 5
+    groupOrder = [];
+end
+
+boxplot(data, groups, 'Labels', labels, 'GroupOrder', groupOrder);
 
 % the inner settings (free to modify)
 settings.linePad = 5; % in percents of the data range
@@ -55,5 +60,8 @@ for i = 1 : diffNumber
 end
 
 % in the end adjust the figure y-axis limits to reflect added lines
-ylim([(min(data) - figPad) (yVals(2) + starPad + figPad)])
+if diffNumber ~= 0
+    ylim([(min(data) - figPad) (yVals(2) + starPad + figPad)])
+end
+
 end
