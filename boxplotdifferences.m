@@ -1,5 +1,5 @@
-function boxplotdifferences(data, groups, diffs, labels, groupOrder)
-% boxplotdifferences(data, groups, diffs, labels, groupOrder)
+function boxplotdifferences(data, groups, diffs, labels, paint, groupOrder)
+% boxplotdifferences(data, groups, diffs, labels, paint, groupOrder)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Compose the classic MATLAB boxplot with included between-group differences
 % shown as lines with stars above.
@@ -13,18 +13,35 @@ function boxplotdifferences(data, groups, diffs, labels, groupOrder)
 %   [1 3 1; 1 4 2; 3 4 3].
 %   labels: group labels to appear in the boxplot in the same format as a
 %   classic boxplot. Example: {'group a', 'group b', 'group c'}
+%   paint: set to one of you want to change the style of the boxplot
 %   groupOrder (optional argument): specifies the order of the groups
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Vojtech Illner, FEE CTU
 % December 2021
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-if nargin < 5
+if nargin < 6
     groupOrder = [];
 end
+if nargin < 5
+    paint = 0;
+end
 
-boxplot(data, groups, 'Labels', labels, 'GroupOrder', groupOrder);
+if paint == 1    
+    %colors of each box
+    map = [1 0 0
+        0.08 0.5 0
+        0.1 0.4 1
+        0.9 0 0.45]; 
 
+    h = boxplot(data, groups, 'Labels', labels, 'GroupOrder', groupOrder,'ColorGroup', [1,2,3,4],'Widths', 0.4,'Colors',map);
+    set(h,{'linew'},{1.2}) %set thickness of boxes outlines
+    %finds median lines and paint them black
+    lines = findobj(h, 'type', 'line', 'Tag', 'Median');
+    set(lines, 'Color', 'black');
+else
+    boxplot(data, groups, 'Labels', labels, 'GroupOrder', groupOrder);
+end
 % the inner settings (free to modify)
 settings.linePad = 5; % in percents of the data range
 settings.starPad = 2; % in percents of the data range
